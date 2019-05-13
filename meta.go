@@ -1,9 +1,10 @@
 package metascraper
 
 import (
-	"golang.org/x/net/html"
 	"log"
 	"strings"
+
+	"golang.org/x/net/html"
 )
 
 // Meta represents a `meta` tag in the head of an HTML document.
@@ -46,7 +47,12 @@ func (r *MetaReader) HandleStart(tn string, attrs map[string]string, z *html.Tok
 		// (for instance by the opengraph spec), it's not actually a standard
 		// attribute of the meta tag in XHTML1 or HTML5.
 		// http://stackoverflow.com/questions/18448871/meta-tag-there-is-no-attribute-property-and-other-attribute-error
-		m.Property = attrs["property"]
+		switch {
+		case len(attrs["property"]) > 0:
+			m.Property = attrs["property"]
+		case len(attrs["itemprop"]) > 0:
+			m.Property = attrs["itemprop"]
+		}
 		m.Content = attrs["content"]
 		m.Name = attrs["name"]
 		// Handle structured properties:
