@@ -2,7 +2,6 @@ package metascraper
 
 import (
 	"golang.org/x/net/html"
-	"log"
 )
 
 // ItemScope represents a schema.org itemscope.
@@ -122,7 +121,10 @@ func (r *SchemaReader) HandleText(text []byte) {
 	if r.insideProp {
 		s, exists := r.current()
 		if !exists || len(s.Props) == 0 {
-			log.Fatalln("No prop to set content from text node")
+			// log.Fatalln("no prop to set content from text node")
+
+			// HACK: just return instead of handling the error
+			return
 		}
 		s.Props[len(s.Props)-1].Content = string(text)
 	}

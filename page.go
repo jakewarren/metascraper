@@ -2,9 +2,10 @@ package metascraper
 
 import (
 	"bytes"
-	"golang.org/x/net/html"
 	"regexp"
 	"strings"
+
+	"golang.org/x/net/html"
 )
 
 var lineFeedReplacer = regexp.MustCompile(`[\n\r]+`)

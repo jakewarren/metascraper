@@ -1,7 +1,6 @@
 package metascraper
 
 import (
-	"log"
 	"strings"
 
 	"golang.org/x/net/html"
@@ -111,7 +110,10 @@ func (r *MetaReader) makeCurrentExtra() {
 	e := r.pop()
 	cur, exists := r.current()
 	if !exists {
-		log.Fatalln("No prior meta tag to associate the current tag with.")
+		// log.Fatalln("No prior meta tag to associate the current tag with.")
+
+		// HACK: just return instead of handling the error
+		return
 	}
 	cur.Extra = append(cur.Extra, e)
 }
