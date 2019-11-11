@@ -1,9 +1,11 @@
 package metascraper
 
 import (
+	"crypto/tls"
 	"io"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 // Scrape creates a new page and populates its fields from the content found at
@@ -16,7 +18,16 @@ func Scrape(url string) (*Page, error) {
 	}
 	// Unlike the other TokenReaders, the PageReader must manipulate its parent.
 	p.PageReader = &PageReader{page: p}
-	resp, err := http.Get(url)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: false},
+	}
+	client := http.Client{
+		Transport: tr,
+		Timeout:   30 * time.Second,
+	}
+
+	resp, err := client.Get(url)
 	if err != nil {
 		return p, err
 	}
